@@ -17,3 +17,7 @@ async login() {
   await wx.login();
 }
 ```
+
+## Thanks
+
+[labrador](https://github.com/maichong/labrador)
