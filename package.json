@@ -1,6 +1,6 @@
 {
   "name": "weapp-promise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "turn api of weapp to promise 把微信小程序 api 转成 promise",
   "main": "index.js",
   "scripts": {

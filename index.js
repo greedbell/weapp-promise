@@ -14,17 +14,40 @@ Object.defineProperty(promise, 'app', {
   }
 });
 
+/**
+ * 没有 success fail 回调
+ */
+var noPromiseMethods = {
+  stopRecord: true,
+  pauseVoice: true,
+  stopVoice: true,
+  pauseBackgroundAudio: true,
+  stopBackgroundAudio: true,
+  showNavigationBarLoading: true,
+  hideNavigationBarLoading: true,
+  createAnimation: true,
+  createContext: true,
+  hideKeyboard: true,
+  stopPullDownRefresh: true
+};
+
 function forEach(key) {
-  if (key.substr(0, 2) === 'on' || /\w+Sync$/.test(key)) {
-    if (wx.__lookupGetter__(key)) { // wx. 有的，且以 on 开关，或者 Sync 结尾的用原始的方法
-      Object.defineProperty(promise, key, {
-        get: function () {
-          return wx[key];
+  if (noPromiseMethods[key] || key.substr(0, 2) === 'on' || /\w+Sync$/.test(key)) { // 没有 success fail 回调，以 on 开头，或以 Sync 结尾的用原始的方法
+    promise[key] = function () {
+      if (__DEBUG__) {
+        var res = wx[key].apply(wx, arguments);
+        if (!res) {
+          res = {};
         }
-      });
-    } else { // wx. 没有有，且以 on 开关，或者 Sync 结尾的返回wx
-      promise[key] = wx;
-    }
+        if (res && typeof res === 'object') {
+          res.then = function () {
+            console.warn('wx.' + key + ' is not a async function, you should not use await ');
+          };
+        }
+        return res;
+      }
+      return wx[key].apply(wx, arguments);
+    };
     return;
   }
 

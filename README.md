@@ -1,6 +1,6 @@
 # weapp-promise
 
-turn api of weapp to promise 把微信小程序 api 转成 promise
+turn api of weapp to promise 把微信小程序 api 转成 promise. 功能是从 [labrador](https://github.com/maichong/labrador) 提取得到。
 
 ## getApp()
 
